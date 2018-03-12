@@ -1,7 +1,11 @@
-{% extends 'base.html' %}
+{% extends 'calendar_base.html' %}
 
 {% block header_text %}Reservation{% endblock %}
 
 {% block content %}
-{{ calendar }}
-<a id="id_date_box" href="room" class="btn btn-info" role="button">Link Button</a>{% endblock %}
+<div class="container">
+<main>{{ calendar }}</main>
+</div>
+<a id="id_date_box" href="room" class="btn btn-info" role="button">Link Button</a>
+
+{% endblock %}
