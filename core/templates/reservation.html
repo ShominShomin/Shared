@@ -6,6 +6,7 @@
 <div class="container">
 <main>{{ calendar }}</main>
 </div>
-<a id="id_date_box" href="room" class="btn btn-info" role="button">Link Button</a>
+
+<a id="id_date_box" href="{% url 'reservation_room' %}" class="btn btn-info" role="button">Link Button</a>
 
 {% endblock %}
