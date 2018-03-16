@@ -14,17 +14,12 @@ def home_page(request):
     return render(request, 'home.html')
 
 
-def confirm_order_page(request):
-    return render(request, 'confirm_order.html')
-
-def check_reservation_page(request):
-    return render(request, 'check_reservation.html')
-
-def reservation(request, year, month):
+def reservation_page(request, year, month):
     year = int(year)
     month = int(month)
     cal = CustomCalendar().formatmonth(year, month)
     return render(request, 'reservation.html', {'calendar': mark_safe(cal), })
+
 
 def reservation_get(year, month):
     year = int(year)
@@ -32,8 +27,18 @@ def reservation_get(year, month):
     cal = CustomCalendar().formatmonth(year, month)
     return render_to_response('reservation.html', {'calendar': mark_safe(cal), })
 
-def room_page(request, year, month, day):
-    return render(request, 'room.html')
 
-def reservation_auth_page(request, year, month, day, room):
-    return render(request, 'reservation_auth.html')
+def reservation_room_page(request, year, month, day):
+    return render(request, 'reservation_room.html')
+
+
+def reservation_choose_method_page(request, year, month, day, room):
+    return render(request, 'reservation_choose_method.html')
+
+
+def confirm_order_page(request):
+    return render(request, 'confirm_order.html')
+
+
+def check_reservation_page(request):
+    return render(request, 'check_reservation.html')
