@@ -29,28 +29,27 @@ class InitialTest(FunctionalTest):
         test_date = mydate.strftime("%B").upper() + " " + str(mydate.year)
         self.assertIn(test_date, month_text)
 
-        # Өөрийн буудаллах боломжит өдрийг(маргааш, 2өдөр+??) сонгоход өрөөний сонголтууд гарч ирэв.
+        # Өөрийн буудаллах боломжит сарын эхний өдрийг сонгоход өрөөний сонголтууд гарч ирэв.
         chosendatebox = self.browser.find_element_by_link_text('1')
         chosendatebox.click()
         header_text = self.browser.find_element_by_tag_name('h1').text
         self.assertIn('Choose Room', header_text)
 
-        # Өрөөгөө сонгоод захиалах товчийг дарахад шинээр бүртгүүлэх эсвэл
-        # утасны дугаараар шууд баталгаажуулалт хийх хуудас гарч ирэв.
+        # Өрөөгөө сонгоход баталгаажуулах хуудас гарч ирэв.
         chosenroombox = self.browser.find_element_by_id('id_room_box')
         chosenroombox.click()
         header_text = self.browser.find_element_by_tag_name('h1').text
         self.assertIn('Enter credentials', header_text)
 
-        # Бат утасны дугаараа хийгээд баталгаажуулалтын товчийг дарахад
+        # Бат  мэдээллээ хийгээд баталгаажуулалтын товчийг дарахад
         # тухайн захиалга бүртгэгдэж. Захиалга амжилттай болсноор
-        # захиалгын дугаар болон нууц кодыг тухайн хуудаст дүрсэлж
-        # Мэдээллийн ажилтан дахин холбогдоно гэдгийг Бат-д мэдэгдэв.
+        # захиалгын дугаар болон нууц кодыг тухайн хуудаст дүрслэв
         credentialsbutton = self.browser.find_element_by_id('id_confirmation_button')
         credentialsbutton.click()
         header_text = self.browser.find_element_by_tag_name('h1').text
         self.assertIn('Your reservation has been placed', header_text)
         # more status displayed under.
+
 
         # Бат захиалгаа өгч дуусаад захиалгаа шалгах товчийг дарснаар өөрийн захиалгийн статусыг харахад
         # Захиалга бүртгэгдсэн боловч баталгаажаагүйг харуулж байв

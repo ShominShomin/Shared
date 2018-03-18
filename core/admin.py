@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import Item
+from .models import Room, Reservation, ReservedRoom
 
-# Register your models here.
-
-admin.site.register(Item)
+admin.site.register(Reservation)
+admin.site.register(Room)
+admin.site.register(ReservedRoom)

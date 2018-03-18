@@ -1,8 +1,11 @@
 from django.shortcuts import render
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.utils.safestring import mark_safe
 from datetime import date
 from .customcalendar import CustomCalendar
+from .forms import ReservationForm
+from .models import Room, ReservedRoom
+import datetime
 
 
 def home_page():
@@ -32,12 +35,34 @@ def reservation_room_page(request, year, month, day):
     return render(request, 'reservation_room.html')
 
 
-def reservation_choose_method_page(request, year, month, day, room):
-    return render(request, 'reservation_choose_method.html')
+def reservation_place_order_page(request, year, month, day, room):
+    reservation_date = datetime.datetime(int(year), int(month), int(day))
+
+    if ReservedRoom.objects.filter(room_id=room, date=reservation_date).exists():
+        return render(request, 'home.html')
+
+    if request.method == 'POST':
+        reservation_form = ReservationForm(request.POST)
+        if reservation_form.is_valid():
+            if ReservedRoom.objects.filter(room_id=room, date=reservation_date).exists():
+                return render(request, 'home.html')
+
+            reserved_room = ReservedRoom(reservation_date, room)
+            reserved_room.save()
+
+            reservation = reservation_form.save()
+            reservation.room = Room.objects.get(pk=room)
+            reservation.date = reservation_date
+            reservation.save()
+
+    else:
+        reservation_form = ReservationForm(initial={'country_name': 'MN'})
+
+    return render(request, 'reservation_place_order.html', {'reservation_form': reservation_form})
 
 
 def confirm_order_page(request):
-    return render(request, 'confirm_order.html')
+    return render(request, 'reservation_confirm_order.html')
 
 
 def check_reservation_page(request):
