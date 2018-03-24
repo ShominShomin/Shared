@@ -19,9 +19,11 @@ class FunctionalTest(StaticLiveServerTestCase):
         second_room = Room(room_id=2, room_name="Combo")
         second_room.save()
 
+
         first_employee = User.objects.create_user(username='bold',
                                               email='bold@bgmail.com',
                                               password='CocaCola')
+
 
     def tearDown(self):
         self.browser.refresh()

@@ -13,4 +13,6 @@ urlpatterns = [
         name='reservation_auth'),
     url(r'^confirm_order$', views.confirm_order_page, name='confirm_order'),
     url(r'^check_reservation$', views.check_reservation_page, name='check_reservation'),
+    url(r'^employee$', views.employee_home_page, name='employee_home'),
+    url(r'^employee/add$', views.employee_add_page, name='employee_add'),
 ]

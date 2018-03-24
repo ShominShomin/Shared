@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block header_text %}Employee{% endblock %}
+
+
+{% block content %}
+
+
+{% if user.is_authenticated %}
+<p id ="username">{{user.username}}</p>
+
+<a id="id_reservation_button" href="{% url 'employee_add' %}" class="btn btn-info" role="button">Add employee</a>
+
+{% endif %}
+
+
+
+{% endblock %}

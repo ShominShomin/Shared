@@ -5,6 +5,7 @@ from datetime import date
 from .customcalendar import CustomCalendar
 from .forms import ReservationForm
 from .models import Room, ReservedRoom
+from django.contrib.auth.forms import UserCreationForm
 import datetime
 
 
@@ -38,9 +39,9 @@ def reservation_room_page(request, year, month, day):
     rooms = Room.objects.all()
 
     for reserved_room in reserved_rooms:
-        rooms = rooms.exclude(room_id = reserved_room.room_id)
+        rooms = rooms.exclude(room_id=reserved_room.room_id)
 
-    return render(request, 'reservation_room.html', {'rooms': rooms })
+    return render(request, 'reservation_room.html', {'rooms': rooms})
 
 
 def reservation_place_order_page(request, year, month, day, room):
@@ -80,3 +81,19 @@ def confirm_order_page(request, reservation):
 
 def check_reservation_page(request):
     return render(request, 'check_reservation.html')
+
+
+def employee_home_page(request):
+    return render(request, 'employee/home.html')
+
+
+def employee_add_page(request):
+    if request.method == 'POST':
+        user_creation_form = UserCreationForm(request.POST)
+        if user_creation_form.is_valid():
+            user_creation_form.save()
+
+    else:
+        user_creation_form = UserCreationForm()
+
+    return render(request, 'employee/add.html.', {'user_creation_form': user_creation_form})
