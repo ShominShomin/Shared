@@ -21,6 +21,8 @@ class Reservation(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE, null=True)
     date = models.DateField(null=True)
 
+    confirmation = models.BooleanField(default=False)
+
     def __str__(self):
         string = self.first_name + " " + str(self.date)
         return string
@@ -36,3 +38,4 @@ class ReservedRoom(models.Model):
     def __str__(self):
         string = str(self.room_id) + ", " + str(self.date)
         return string
+

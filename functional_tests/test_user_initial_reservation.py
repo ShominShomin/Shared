@@ -2,14 +2,13 @@ from functional_tests.base import FunctionalTest
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
+from selenium.webdriver.support.select import Select
 import datetime
 
 
 class InitialTest(FunctionalTest):
 
     def test_initial_web_test(self):
-        current_date = datetime.datetime.now()
-
         # Бат зочид буудлын талаар сонсоод вебсайтыг нь зочилхоор шийдэв
         # Анх орж үзэхэд вебийн title болон header-т тухайн вебийн нэр бичээстэй байхыг харав
         self.browser.get(self.live_server_url)
@@ -28,49 +27,32 @@ class InitialTest(FunctionalTest):
         mydate = datetime.datetime.now()
         test_date = mydate.strftime("%B").upper() + " " + str(mydate.year)
         self.assertIn(test_date, month_text)
+        chosendatebox = self.browser.find_element_by_link_text(str(mydate.day))
+        chosendatebox.click()
 
         # Өөрийн буудаллах боломжит сарын эхний өдрийг сонгоход өрөөний сонголтууд гарч ирэв.
-        chosendatebox = self.browser.find_element_by_link_text('1')
-        chosendatebox.click()
         header_text = self.browser.find_element_by_tag_name('h1').text
         self.assertIn('Choose Room', header_text)
-
-        # Өрөөгөө сонгоход баталгаажуулах хуудас гарч ирэв.
-        chosenroombox = self.browser.find_element_by_id('id_room_box')
+        chosenroombox = self.browser.find_element_by_link_text('Deluxe')
         chosenroombox.click()
+
+        # Өрөөгөө сонгоход баталгаажуулах хуудас гарч ирэв
         header_text = self.browser.find_element_by_tag_name('h1').text
         self.assertIn('Enter credentials', header_text)
 
         # Бат  мэдээллээ хийгээд баталгаажуулалтын товчийг дарахад
         # тухайн захиалга бүртгэгдэж. Захиалга амжилттай болсноор
         # захиалгын дугаар болон нууц кодыг тухайн хуудаст дүрслэв
+        self.browser.find_element_by_name('first_name').send_keys('Bat')
+        self.browser.find_element_by_name('last_name').send_keys('Bayar')
+        self.browser.find_element_by_name('e_mail_address').send_keys('Bat@gmail.com')
+        ##if need to test dropdown selector uncomment
+        ##Select(self.browser.find_element_by_name('country_name')).select_by_visible_text('Mongolia')
+        self.browser.find_element_by_name('city_name').send_keys('Ulaanbaatar')
+        self.browser.find_element_by_name('phone_number').send_keys('99999999')
         credentialsbutton = self.browser.find_element_by_id('id_confirmation_button')
         credentialsbutton.click()
+
+        # Бат захиалгаа өгч дууссаныг хараад browser-ийг хаав
         header_text = self.browser.find_element_by_tag_name('h1').text
         self.assertIn('Your reservation has been placed', header_text)
-        # more status displayed under.
-
-
-        # Бат захиалгаа өгч дуусаад захиалгаа шалгах товчийг дарснаар өөрийн захиалгийн статусыг харахад
-        # Захиалга бүртгэгдсэн боловч баталгаажаагүйг харуулж байв
-        self.browser.refresh()
-        self.browser.get(self.live_server_url)
-        header_text = self.browser.find_element_by_tag_name('h1').text
-        self.assertIn('Home', header_text)
-
-        checkbutton = self.browser.find_element_by_id('id_check_reservation_button')
-        checkbutton.click()
-
-        header_text = self.browser.find_element_by_tag_name('h1').text
-        self.assertIn('Reservation Check', header_text)
-
-        # Ажилтан Болд нэвтрэх эрхээрээ нэвтэрч оров
-
-        # Захиалга товч дээр дарахад баталгаажаагүй хэрэглэгчдийн жагсаалт харагдана
-
-        # Жагсаалтаас Бат-ийн захиалгийг хараад холбогдох утас-руу залгаж/смсдэв.
-
-        # Батийн захиалгийг ажилтан Болд баталгаажуулав.
-
-        # Мэдээллийн ажилтан/Систем Бат-тай утсаар/мэйл/СМС-ээр холбогдоод захиалгыг баталгаажуулсны
-        # дараагаар Бат захиалгаа шалгахад батаалгажсан статустай болсон байна.

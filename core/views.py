@@ -32,13 +32,24 @@ def reservation_get(year, month):
 
 
 def reservation_room_page(request, year, month, day):
-    return render(request, 'reservation_room.html')
+    reservation_date = datetime.datetime(int(year), int(month), int(day))
+
+    reserved_rooms = ReservedRoom.objects.filter(date=reservation_date)
+    rooms = Room.objects.all()
+
+    for reserved_room in reserved_rooms:
+        rooms = rooms.exclude(room_id = reserved_room.room_id)
+
+    return render(request, 'reservation_room.html', {'rooms': rooms })
 
 
 def reservation_place_order_page(request, year, month, day, room):
     reservation_date = datetime.datetime(int(year), int(month), int(day))
 
     if ReservedRoom.objects.filter(room_id=room, date=reservation_date).exists():
+        return render(request, 'home.html')
+
+    if not Room.objects.filter(room_id=room).exists():
         return render(request, 'home.html')
 
     if request.method == 'POST':
@@ -55,13 +66,15 @@ def reservation_place_order_page(request, year, month, day, room):
             reservation.date = reservation_date
             reservation.save()
 
+            return render(request, 'reservation_confirm_order.html', {'reservation': mark_safe(reservation), })
+
     else:
         reservation_form = ReservationForm(initial={'country_name': 'MN'})
 
     return render(request, 'reservation_place_order.html', {'reservation_form': reservation_form})
 
 
-def confirm_order_page(request):
+def confirm_order_page(request, reservation):
     return render(request, 'reservation_confirm_order.html')
 
 
