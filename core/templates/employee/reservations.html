@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block header_text %}Employee{% endblock %}
+
+
+{% block content %}
+
+{% for reservation in reservations %}
+
+{{reservation.first_name}}
+
+{% if not reservation.confirmation %}
+<a id="{{reservation.first_name}}" href="{% url 'reservation_status' pk=reservation.pk %}">Confirm</a>
+{% endif %}
+
+{% endfor %}
+
+{% endblock %}

@@ -2,17 +2,14 @@
 
 {% block header_text %}Employee{% endblock %}
 
-
 {% block content %}
+<p id="username">{{user.username}}</p>
+<a id="id_add_employee" href="{% url 'employee_add' %}" class="btn btn-info" role="button">Add employee</a>
+<a id="id_reservations" href="{% url 'confirm_reservations' %}" class="btn btn-info" role="button">Confirm Reservations</a>
+<a id="id_rooms" href="{% url 'room_list' %}" class="btn btn-info" role="button">Rooms</a>
 
-
-{% if user.is_authenticated %}
-<p id ="username">{{user.username}}</p>
-
-<a id="id_reservation_button" href="{% url 'employee_add' %}" class="btn btn-info" role="button">Add employee</a>
-
-{% endif %}
-
-
+{% now "Y" as YEAR %}
+{% now "m" as MONTH %}
+<a id="id_new_reservation" href="{% url 'reservation' year=YEAR month=MONTH%}" class="btn btn-info" role="button">New Reservation</a>
 
 {% endblock %}

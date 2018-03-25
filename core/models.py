@@ -1,10 +1,13 @@
 from django.db import models
 from django_countries.fields import CountryField
+from datetime import datetime
 
 
 class Room(models.Model):
     room_id = models.PositiveIntegerField(primary_key=True)
     room_name = models.CharField(max_length=40)
+    last_cleaned = models.DateField(default=datetime.now)
+    is_occupied = models.BooleanField(default=False)
 
     def __str__(self):
         return self.room_name
@@ -38,4 +41,3 @@ class ReservedRoom(models.Model):
     def __str__(self):
         string = str(self.room_id) + ", " + str(self.date)
         return string
-

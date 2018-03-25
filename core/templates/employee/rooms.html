@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block header_text %}Employee{% endblock %}
+
+
+{% block content %}
+
+{% for room in room_list %}
+
+{{room}}
+
+{% endfor %}
+
+{% endblock %}

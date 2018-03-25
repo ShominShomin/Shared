@@ -1,11 +1,24 @@
-# Ажилтан Болд нэвтрэх эрхээрээ нэвтэрч оров
+from functional_tests.base import FunctionalTest
+import re
 
-# Захиалга товч дээр дарахад баталгаажаагүй хэрэглэгчдийн жагсаалт харагдана
 
-# Жагсаалтаас Бат-ийн захиалгийг хараад холбогдох утас-руу залгаж/смсдэв.
+class EmployeeConfirmReservationTest(FunctionalTest):
 
-# Батийн захиалгийг ажилтан Болд баталгаажуулав.
+    def test_confirming_reservation(self):
+        # Ажилтан Болд ажилтдын нэвтрэх хуудсын хаягийг нээж нэвтрэх эрхээрээ нэвтэрч оров
+        url = self.live_server_url + '/login'
+        self.browser.get(url)
+        self.browser.find_element_by_id('id_username').send_keys('bold')
+        self.browser.find_element_by_id('id_password').send_keys('CocaCola')
+        self.browser.find_element_by_id('submit').click()
 
-# Мэдээллийн ажилтан/Систем Бат-тай утсаар/мэйл/СМС-ээр холбогдоод захиалгыг баталгаажуулсны
+        # Захиалга товч дээр дарахад баталгаажаагүй хэрэглэгчдийн жагсаалт харагдана
+        self.browser.find_element_by_link_text('Confirm Reservations').click()
+        text_found = re.search(r'Bat', self.browser.page_source)
+        self.assertNotEqual(text_found, None)
 
-# дараагаар Бат захиалгаа шалгахад батаалгажсан статустай болсон байна.
+        # Жагсаалтаас Бат-ийн захиалгийг хараад баталгаажуулахад тухайн захиалга
+        # Баталгаажуулаагүй захиалгын жагсаалтаас хасагдав
+        self.browser.find_element_by_id('Bat').click()
+        text_found = re.search(r'Bat', self.browser.page_source)
+        self.assertEqual(text_found, None)

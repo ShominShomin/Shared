@@ -8,6 +8,6 @@ urlpatterns = [
     url(r'^$', core_views.home_page, name='home'),
     url(r'^core/', include(core_urls)),
     url(r'^admin/', admin.site.urls),
-    url(r'^accounts/login/$', views.login, name='login'),
-    url(r'^accounts/logout/$', views.logout, name='logout', kwargs={'next_page': '/'}),
+    url(r'^login/$', views.login, name='login'),
+    url(r'^logout/$', views.logout, name='logout', kwargs={'next_page': '/'}),
 ]
