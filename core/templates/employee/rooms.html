@@ -8,6 +8,9 @@
 {% for room in room_list %}
 
 {{room}}
+{{room.last_cleaned}}
+{{room.is_occupied}}
+<a id="{{room.room_id}}" href="{% url 'clean_status' pk=room.pk %}">Clean</a>
 
 {% endfor %}
 

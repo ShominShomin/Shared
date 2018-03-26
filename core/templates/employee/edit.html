@@ -1,13 +1,15 @@
-{% extends 'calendar_base.html' %}
+{% extends 'base.html' %}
 
-{% block header_text %}Reservation{% endblock %}
+{% block header_text %}Room{% endblock %}
+
 
 {% block content %}
 
 <form method="post" action="" role="registration">
     {% csrf_token %}
+
     <table class="table">
-        {% for field in date_selection_form %}
+        {% for field in form %}
         <tr>
             <td>{{ field.label_tag }}</td>
             <td>{{ field }}</td>
@@ -23,6 +25,6 @@
     <button id="submit" type="submit" name="go" class="btn btn-lg btn-info btn-block">Бүртгүүлэх</button>
 </form>
 
-<a id="id_date_box" href="{% url 'reservation_room' %}" class="btn btn-info" role="button">Link Button</a>
+<a id="cancel_button" href="{% url 'room_list' %}" class="btn btn-lg btn-info btn-block">Болих</a>
 
 {% endblock %}

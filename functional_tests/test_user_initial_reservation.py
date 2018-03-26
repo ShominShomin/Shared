@@ -23,13 +23,10 @@ class InitialTest(FunctionalTest):
         reservationbutton.click()
         header_text = self.browser.find_element_by_tag_name('h1').text
         self.assertIn('Reservation', header_text)
-        # Тухайн хуудсыг шалгаж үзэхэд тухайн сарын календар харагдаж байв.
-        month_text = self.browser.find_element_by_name('monthName').text
-        mydate = datetime.datetime.now()
-        test_date = mydate.strftime("%B").upper() + " " + str(mydate.year)
-        self.assertIn(test_date, month_text)
-        chosendatebox = self.browser.find_element_by_link_text(str(mydate.day))
-        chosendatebox.click()
+        # Тухайн хуудсыг шалгаж үзэхэд буудаллах өдрөө сонгох хэсэг байв.
+        self.browser.find_element_by_name('start_date').send_keys('2018-03-22')
+        self.browser.find_element_by_name('end_date').send_keys('2018-03-31')
+        self.browser.find_element_by_id('submit').click()
 
         # Өөрийн буудаллах боломжит сарын эхний өдрийг сонгоход өрөөний сонголтууд гарч ирэв.
         header_text = self.browser.find_element_by_tag_name('h1').text
@@ -69,8 +66,10 @@ class InitialTest(FunctionalTest):
 
         #Шинэ захиалга үүсгэх товч дээр дарж Баярын захиалгыг үүсгэв.
         self.browser.find_element_by_link_text('New Reservation').click()
-        mydate = datetime.datetime.now()
-        self.browser.find_element_by_link_text(str(mydate.day)).click()
+        self.browser.find_element_by_name('start_date').send_keys('2018-03-22')
+        self.browser.find_element_by_name('end_date').send_keys('2018-03-31')
+        self.browser.find_element_by_id('submit').click()
+
         self.browser.find_element_by_link_text('Deluxe').click()
         self.browser.find_element_by_name('first_name').send_keys('Bayar')
         self.browser.find_element_by_name('last_name').send_keys('Bold')
