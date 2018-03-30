@@ -5,7 +5,7 @@
 {% block content %}
 
 {% for room in rooms %}
-<a href="{{ room.room_id }}" class="btn btn-info" role="button">{{ room.room_name }}</a>
+<a href="{{ room.room_number }}" class="btn btn-info" role="button">{{ room.room_name }}</a>
 {% endfor %}
 
 {% endblock %}

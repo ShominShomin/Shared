@@ -1,17 +1,36 @@
-{% extends 'base.html' %}
+{% extends 'employee/base.html' %}
 
-{% block header_text %}Employee{% endblock %}
+
+{% block header_text %}Rooms{% endblock %}
 
 
 {% block content %}
+<a href="{% url 'room_new' %}">NEW ROOM</a>
 
-{% for room in room_list %}
+<table class="demo-table">
+    <thead>
+    <tr>
+        <th>Өрөөний тоот</th>
+        <th>Өрөөний нэр</th>
+        <th>Одоогоор хүнтэй байгаа эсэх</th>
+        <th>Сүүлд цэвэрлэсэн огноо</th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
 
-{{room}}
-{{room.last_cleaned}}
-{{room.is_occupied}}
-<a id="{{room.room_id}}" href="{% url 'clean_status' pk=room.pk %}">Clean</a>
+    {% for room in room_list %}
+    <tr>
+        <td>{{room.room_number}}</td>
+        <td>{{room}}</td>
+        <td>{{room.is_occupied}}</td>
+        <td>{{room.last_cleaned}}</td>
+        <td><a href="{% url 'clean_status' pk=room.pk %}">Clean</a></td>
+        <td><a href="{% url 'room_edit' pk=room.pk %}">ӨӨРЧЛӨХ</a></td>
 
-{% endfor %}
+    </tr>
+    {% endfor %}
 
+</table>
 {% endblock %}
+

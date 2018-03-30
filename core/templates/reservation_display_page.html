@@ -4,7 +4,9 @@
 
 {% block content %}
 
-{{ reservation.first_name }}
+{% for reservation in reservation %}
+{{ reservation.confirmation }}
+{% endfor %}
 
 
 {% endblock %}

@@ -1,4 +1,4 @@
-{% extends 'calendar_base.html' %}
+{% extends 'base.html' %}
 
 {% block header_text %}Reservation{% endblock %}
 
@@ -22,7 +22,5 @@
 
     <button id="submit" type="submit" name="go" class="btn btn-lg btn-info btn-block">Бүртгүүлэх</button>
 </form>
-
-<a id="id_date_box" href="{% url 'reservation_room' %}" class="btn btn-info" role="button">Link Button</a>
 
 {% endblock %}

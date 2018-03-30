@@ -64,6 +64,7 @@ class InitialTest(FunctionalTest):
         self.browser.find_element_by_id('id_password').send_keys('CocaCola')
         self.browser.find_element_by_id('submit').click()
 
+
         #Шинэ захиалга үүсгэх товч дээр дарж Баярын захиалгыг үүсгэв.
         self.browser.find_element_by_link_text('New Reservation').click()
         self.browser.find_element_by_name('start_date').send_keys('2018-03-22')
@@ -81,5 +82,3 @@ class InitialTest(FunctionalTest):
         # Болд захиалгыг бүртгэж дуусаныг харав
         header_text = self.browser.find_element_by_tag_name('h1').text
         self.assertIn('Your reservation has been placed', header_text)
-
-

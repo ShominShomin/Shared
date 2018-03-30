@@ -123,4 +123,4 @@ DATE_INPUT_FORMATS = ['%Y-%m-%d']
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-LOGIN_REDIRECT_URL = '/core/employee'
+LOGIN_REDIRECT_URL = '/employee'

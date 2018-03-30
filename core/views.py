@@ -38,8 +38,9 @@ def reservation_room_page(request, start_date, end_date):
 
     for single_date in daterange(start_date, end_date):
         reserved_rooms = ReservedRoom.objects.filter(date=single_date)
+
         for reserved_room in reserved_rooms:
-            rooms = rooms.exclude(room_id=reserved_room.room_id)
+            rooms = rooms.exclude(room_number=reserved_room.room_number)
 
     return render(request, 'reservation_room.html', {'rooms': rooms})
 
@@ -54,38 +55,35 @@ def reservation_place_order_page(request, start_date, end_date, room):
     end_date = datetime.strptime(end_date, '%Y-%m-%d')
 
     for single_date in daterange(start_date, end_date):
-        if ReservedRoom.objects.filter(room_id=room, date=single_date).exists():
-            return render(request, 'home.html')
-    if not Room.objects.filter(room_id=room).exists():
-        return render(request, 'home.html')
+        if ReservedRoom.objects.filter(room_number=room, date=single_date).exists():
+            return redirect(home_page)
+    if not Room.objects.filter(room_number=room).exists():
+        return redirect(home_page)
 
     if request.method == 'POST':
         reservation_form = ReservationForm(request.POST)
         if reservation_form.is_valid():
             reservation = reservation_form.save()
             for single_date in daterange(start_date, end_date):
-                if ReservedRoom.objects.filter(room_id=room, date=single_date).exists():
+                if ReservedRoom.objects.filter(room_number=room, date=single_date).exists():
                     reservation.delete()
                     return render(request, 'home.html')
-                reserved_room = ReservedRoom(date=single_date, room_id=room)
+                reserved_room = ReservedRoom(date=single_date, room_number=room)
                 reserved_room.reservation = reservation
                 reserved_room.save()
             if request.user.is_authenticated():
                 reservation.confirmation = True
             reservation.save()
-
-            return render(request, 'reservation_confirm_order.html', {'reservation': mark_safe(reservation), })
+            return redirect('reservation_display', pk=reservation.pk)
+            #return render(request, 'reservation_display_page.html', {'pk': reservation.pk})
     else:
         reservation_form = ReservationForm(initial={'country_name': 'MN'})
     return render(request, 'reservation_place_order.html', {'reservation_form': reservation_form})
 
 
-def confirm_order_page(request, reservation):
-    return render(request, 'reservation_confirm_order.html')
-
-
-def check_reservation_page(request):
-    return render(request, 'check_reservation.html')
+def reservation_display_page(request, pk):
+    reservation = Reservation.objects.filter(pk=pk)
+    return render(request, 'reservation_display_page.html', {'reservation': reservation})
 
 
 @login_required
@@ -123,7 +121,7 @@ def reservation_confirmation_status(request, pk):
 def room_list_page(request):
     room_list = Room.objects.all()
     for room in room_list:
-        if ReservedRoom.objects.filter(room_id=room.room_id, date=date.today()).exists():
+        if ReservedRoom.objects.filter(room_number=room.room_number, date=date.today()).exists():
             room.is_occupied = True
         else:
             room.is_occupied = False
@@ -138,8 +136,9 @@ def room_page(request, pk):
 
 @login_required
 def room_clean_status(request, pk):
+    from django.utils import timezone
     room = Room.objects.get(pk=pk)
-    room.last_cleaned = datetime.now()
+    room.last_cleaned = timezone.now()
     room.save()
     return redirect(request.META['HTTP_REFERER'])
 

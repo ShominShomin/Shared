@@ -1,4 +1,8 @@
 from functional_tests.base import FunctionalTest
+import re
+from datetime import datetime
+from django.utils import timezone
+import time
 
 
 class RoomFunctionTest(FunctionalTest):
@@ -11,16 +15,11 @@ class RoomFunctionTest(FunctionalTest):
         self.browser.find_element_by_id('id_password').send_keys('CocaCola')
         self.browser.find_element_by_id('submit').click()
 
-        # Өрөө гэсэн товч дээр дарахад яг одоогоор сул өрөөнүүд болон
-        # өнөөдөр хүмүүс буудаллах өрөөг харуулна
+        # Өрөө гэсэн товч дээр дарахад өрөөнүүдийнг жагсаалт дүрслэгдэв.
         self.browser.find_element_by_link_text('Rooms').click()
+        text_found = re.search(r'Deluxe', self.browser.page_source)
+        self.assertNotEqual(text_found, None)
+        text_found = re.search(r'Combo', self.browser.page_source)
+        self.assertNotEqual(text_found, None)
+        #Тухайн жагсаалтаас өрөөнд хүн байгаа эсэхийг харж болж байв.
 
-
-        # Мөн сүүлд хүмүүс орсноос хойш өрөөнд цэвэрлэгээ орсон үгүйг тэмдэглэсэн байна.
-
-        # Түвшин цэвэрлэгээ ороогүй өрөөг сонгож дарахад тухайн өрөөн статус цэвэрлэгдэж байгаа хэлбэрт шилжив.
-
-        # Цэвэрлэж дуусаад Түвшин цэвэрлэж байгаа өрөөг дахин сонгоход цэвэрлэгдсэн хэлбэрт шилжив
-
-    def test_room_status(self):
-        pass

@@ -8,5 +8,4 @@
 {% now "Y" as YEAR %}
 {% now "m" as MONTH %}
 <a id="id_reservation_button" href="{% url 'reservation' year=YEAR month=MONTH%}" class="btn btn-info" role="button">Reservation</a>
-<a id="id_check_reservation_button" href="{% url 'check_reservation' %}" class="btn btn-info" role="button">Check Reservation</a>
 {% endblock %}

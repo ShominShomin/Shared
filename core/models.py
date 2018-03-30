@@ -7,6 +7,7 @@ from django.utils import timezone
 class Room(models.Model):
     room_id = models.AutoField(primary_key=True)
 
+    room_number = models.PositiveIntegerField(default=0)
     last_cleaned = models.DateTimeField(default=timezone.now)
     is_occupied = models.BooleanField(default=False)
 
@@ -36,14 +37,14 @@ class Reservation(models.Model):
 
 class ReservedRoom(models.Model):
     reserved_room_id = models.AutoField(primary_key=True)
+    #below are the fields
     date = models.DateField()
-    room_id = models.PositiveIntegerField()
-
+    room_number = models.PositiveIntegerField()
     reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE, null=True)
 
     class Meta:
-        unique_together = ('date', 'room_id',)
+        unique_together = ('date', 'room_number',)
 
     def __str__(self):
-        string = str(self.room_id) + ", " + str(self.date)
+        string = str(self.room_number) + ", " + str(self.date)
         return string
