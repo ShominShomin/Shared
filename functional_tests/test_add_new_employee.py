@@ -5,7 +5,7 @@ class EmployeeAdditionTest(FunctionalTest):
 
     def test_adding_new_employee(self):
         # Ажилтан Болд ажилтдын нэвтрэх хуудсын хаягийг нээж нэвтрэх эрхээрээ нэвтэрч оров
-        url = self.live_server_url + '/login'
+        url = self.live_server_url + '/accounts/login/'
         self.browser.get(url)
         self.assertIn('Hotel System', self.browser.title)
         header_text = self.browser.find_element_by_tag_name('h1').text
@@ -27,9 +27,9 @@ class EmployeeAdditionTest(FunctionalTest):
 
         # Болд нэвтрэх эрхээрээ орсноо гаргаад Тулга өөрийн шинэ нэвтрэх эрхээрээ
         # ажилтдын нэвтрэх хуудсыг нээж нэвтрэх эрхээрээ амжилттай нэвтэрч орж болж байв.
-        url = self.live_server_url + '/logout'
+        url = self.live_server_url + '/accounts/logout/'
         self.browser.get(url)
-        url = self.live_server_url + '/login'
+        url = self.live_server_url + '/accounts/login/'
         self.browser.get(url)
         self.browser.find_element_by_id('id_username').send_keys('Tulga')
         self.browser.find_element_by_id('id_password').send_keys('SevenEight')

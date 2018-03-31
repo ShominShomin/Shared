@@ -6,7 +6,7 @@ class EmployeeConfirmReservationTest(FunctionalTest):
 
     def test_confirming_reservation(self):
         # Ажилтан Болд ажилтдын нэвтрэх хуудсын хаягийг нээж нэвтрэх эрхээрээ нэвтэрч оров
-        url = self.live_server_url + '/login'
+        url = self.live_server_url + '/accounts/login'
         self.browser.get(url)
         self.browser.find_element_by_id('id_username').send_keys('bold')
         self.browser.find_element_by_id('id_password').send_keys('CocaCola')

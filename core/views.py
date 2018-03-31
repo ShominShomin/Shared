@@ -75,7 +75,7 @@ def reservation_place_order_page(request, start_date, end_date, room):
                 reservation.confirmation = True
             reservation.save()
             return redirect('reservation_display', pk=reservation.pk)
-            #return render(request, 'reservation_display_page.html', {'pk': reservation.pk})
+            # return render(request, 'reservation_display_page.html', {'pk': reservation.pk})
     else:
         reservation_form = ReservationForm(initial={'country_name': 'MN'})
     return render(request, 'reservation_place_order.html', {'reservation_form': reservation_form})
@@ -91,15 +91,17 @@ def employee_home_page(request):
     return render(request, 'employee/home.html')
 
 
+@login_required
 @staff_member_required
 def employee_add_page(request):
     if request.method == 'POST':
         user_creation_form = UserCreationForm(request.POST)
         if user_creation_form.is_valid():
             user_creation_form.save()
+            return redirect('employee_home')
     else:
         user_creation_form = UserCreationForm()
-    return render(request, 'employee/add.html.', {'user_creation_form': user_creation_form})
+    return render(request, 'employee/add.html', {'user_creation_form': user_creation_form})
 
 
 @login_required
@@ -114,7 +116,7 @@ def reservation_confirmation_status(request, pk):
     reservation = Reservation.objects.get(pk=pk)
     reservation.confirmation = not reservation.confirmation
     reservation.save()
-    return redirect(request.META['HTTP_REFERER'])
+    return redirect('confirm_reservations')
 
 
 @login_required
@@ -129,20 +131,14 @@ def room_list_page(request):
 
 
 @login_required
-def room_page(request, pk):
-    room = Room.objects.get(pk=pk)
-    return render(request, 'employee/rooms.html', {'room': room})
-
-
-@login_required
 def room_clean_status(request, pk):
     from django.utils import timezone
     room = Room.objects.get(pk=pk)
     room.last_cleaned = timezone.now()
     room.save()
-    return redirect(request.META['HTTP_REFERER'])
+    return redirect('room_list')
 
-
+@login_required
 @staff_member_required
 def room_edit_page(request, pk=None):
     if pk:
