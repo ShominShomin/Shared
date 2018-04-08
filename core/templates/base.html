@@ -8,14 +8,80 @@
     <title>Hotel System</title>
     <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/base.css" rel="stylesheet">
+    <script src="/static/jquery3.js"></script>
+    <script src="/static/main.js"></script>
 </head>
 
 
 <body>
 
-<h1>{% block header_text %}{% endblock %}</h1>
+<header class="site-header" role="banner">
+    <section class="header-inner full">
+        <h1 id="site-logo">Site Logo</h1>
+        <nav id="navigation" class="navigation" role="navigation">
+            <div class="open-overlay" onclick="myFunction(this)">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+            </div>
+        </nav>
+    </section>
+</header>
 
-{% block content %}{% endblock %}
+
+<div class="overlay" aria-hidden="true">
+    <div class="menu-inner">
+        <ul class="menu">
+            <li><a href="#">About</a></li>
+            <li><a href="#">Press</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="juries.html">Juries</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </div>
+</div>
+
+
+<section class="body">
+    <h1>{% block header_text %}{% endblock %}</h1>
+    {% block content %}{% endblock %}
+</section>
+
+
+<script>
+function myFunction(x) {
+    x.classList.toggle("change");
+}
+</script>
+
+<script type="text/javascript">
+$(function() {
+  $(".open-overlay").click(function(x) {
+    $(".overlay").fadeIn(1000);
+  });
+
+  $(".close-overlay").click(function() {
+    $(".overlay").fadeOut(1000);
+  });
+});
+
+var body = document.body,
+  overlay = document.querySelector('.overlay'),
+  overlayBtts = document.querySelectorAll('div[class$="overlay"]');
+
+[].forEach.call(overlayBtts, function(btt) {
+  "use strict";
+  btt.addEventListener('click', function() {
+    var overlayOpen = this.className === 'open-overlay';
+    overlay.setAttribute('aria-hidden', !overlayOpen);
+
+  }, false);
+});
+
+
+
+</script>
 
 </body>
 

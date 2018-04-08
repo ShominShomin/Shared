@@ -1,5 +1,4 @@
 from django.test import TestCase
-import json
 
 from datetime import datetime
 from datetime import timedelta

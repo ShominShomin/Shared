@@ -1,11 +1,4 @@
 from functional_tests.base import FunctionalTest
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-import time
-from selenium.webdriver.support.select import Select
-import datetime
-from core.models import Reservation
-
 
 class InitialTest(FunctionalTest):
 
