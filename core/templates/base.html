@@ -9,95 +9,95 @@
     <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/base.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link href="/static/daterangepicker/daterangepicker.css" rel="stylesheet" type="text/css"/>
+
     <script src="/static/jquery3.js"></script>
-    <script src="/static/main.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="/static/daterangepicker/daterangepicker.js"></script>
+
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 
 
 <body>
-
-<div id="menu-hide">
-    <div class="centered">
-        <a href="/" class="active">Нүүр Хуудас</a>
-        <a href="/">Бидний тухай</a>
-        <a href="/">Ажлын байр</a>
-        <a href="/">Холбоо барих</a>
+<div id="page_container">
+    <div id="menu_hide">
+        <div class="centered">
+            <a href="/" class="active">Home</a>
+            <a href="/">About</a>
+            <a href="/">Work</a>
+            <a href="/">Contact</a>
+        </div>
     </div>
-</div>
+    <div id="contents">
+        <div class="initiate">
+            <div class="initiate_button" name="daterange"><p class="noselect">BOOK NOW</p></div>
+        </div>
 
-<div id="contents">
-    <div class="navbar">
-        <a href="/">Hotel</a>
+        <div class="navbar">
+            <a href="/"><p class="noselect">LOGO</p></a>
+        </div>
+
+        {% block content %}{% endblock %}
     </div>
-    <h1>{% block header_text %}{% endblock %}</h1>
-    {% block content %}{% endblock %}
-    <p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
+    <div class="menu-button" onclick="fadeMenu(this)">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+    </div>
 
+
+    <script type="text/javascript">
+        $(function () {
+            $('div[name="daterange"]').daterangepicker(
+                {
+                    autoUpdateInput: false,
+                    "minDate": "{% now "m d Y" %}",
+                    "opens": "center"
+                }
+            );
+            $('div[name="daterange"]').on('apply.daterangepicker', function (ev, picker) {
+                location.href = '/reservation/' + picker.startDate.format('YYYY-MM-DD') + '/' + picker.endDate.format('YYYY-MM-DD');
+            });
+            $('div[name="daterange"]').on('cancel.daterangepicker', function (ev, picker) {
+                $(this).val('');
+            });
+        });
+    </script>
+
+    <script>
+        function fadeMenu(x) {
+            x.classList.toggle("change");
+            var y = document.getElementById("menu_hide");
+            if (y.style.display === "block") {
+                y.style.display = "none";
+            } else {
+                y.style.display = "block";
+            }
+            y.classList.toggle("show")
+        }
+    </script>
+    <footer>
+        <div class="container">
+            <div>
+                <ul class="footer_list">
+                    <li><a href="#"><i class="fa fa-facebook fa-2x"></i></a></li>
+                    <li><a href="#"><i class="fa fa-reddit fa-2x"></i></a></li>
+                    <li><a href="#"><i class="fa fa-github fa-2x"></i></a></li>
+                    <li><a href="#"><i class="fa fa-linkedin fa-2x"></i></a></li>
+                    <li><a href="#"><i class="fa fa-twitter fa-2x"></i></a></li>
+                </ul>
+            </div>
+        </div>
+
+        <p>Copyright © {% now "Y" %} Company Name<br>
+            Lorem ipsum dolor sit amet
+            Lorem ipsum dolor sit amet
+            Lorem ipsum dolor sit amet
+        </p>
+    </footer>
 </div>
-
-<div class="menu-button" onclick="fadeMenu(this)">
-    <div class="bar1"></div>
-    <div class="bar2"></div>
-    <div class="bar3"></div>
-</div>
-
-
-<script>
-function fadeMenu(x) {
-    x.classList.toggle("change");
-    var x = document.getElementById("contents");
-    var y = document.getElementById("menu-hide");
-    if (x.style.display === "none") {
-        x.style.display = "block";
-        y.style.display = "none";
-        document.body.style.background = "white";
-    } else {
-        x.style.display = "none";
-        y.style.display = "block";
-        document.body.style.background = "#F6E9DC";
-    }
-}
-</script>
-
 </body>
 
 

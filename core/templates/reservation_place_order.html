@@ -1,9 +1,7 @@
 {% extends 'base.html' %}
 
-{% block header_text %}Enter credentials{% endblock %}
-
 {% block content %}
-
+<div class="container" style="margin-bottom: 50px; margin-top: 10px">
 <form method="post" action="" role="registration">
     {% csrf_token %}
     <table class="table">
@@ -17,10 +15,10 @@
         {% endfor %}
 
         {% endfor %}
-
     </table>
 
-    <button id="id_confirmation_button" type="submit" name="go" class="btn btn-lg btn-info btn-block">Бүртгүүлэх</button>
+    <button id="id_confirmation_button" type="submit" name="go" class="btn btn-lg btn-info btn-block">Бүртгүүлэх
+    </button>
 </form>
-
+</div>
 {% endblock %}

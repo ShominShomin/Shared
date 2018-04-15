@@ -10,6 +10,6 @@
 
 {% now "Y" as YEAR %}
 {% now "m" as MONTH %}
-<a id="id_new_reservation" href="{% url 'reservation' year=YEAR month=MONTH%}" class="btn btn-info" role="button">New Reservation</a>
+<a id="id_new_reservation" href="{% url 'reservation'}" class="btn btn-info" role="button">New Reservation</a>
 
 {% endblock %}

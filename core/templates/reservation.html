@@ -1,26 +1,24 @@
 {% extends 'base.html' %}
-
-{% block header_text %}Reservation{% endblock %}
+{% load bootstrap %}
 
 {% block content %}
+<input type="text" name="daterange" value="Submit"/>
 
-<form method="post" action="" role="registration">
-    {% csrf_token %}
-    <table class="table">
-        {% for field in date_selection_form %}
-        <tr>
-            <td>{{ field.label_tag }}</td>
-            <td>{{ field }}</td>
-        </tr>
-        {% for error in field.errors %}
-        <p style="color: red">{{ error }}</p>
-        {% endfor %}
+<script type="text/javascript">
+$(function()
+{
+    $('input[name="daterange"]').daterangepicker(
+    {
+    "startDate": "{% now "d m Y" %}",
+    "endDate": "{% now "d m Y" %}",
+    "minDate": "{% now "d m Y" %}",
+    "opens": "center"
+},
+function(start, end, label)
+{location.href = '/reservation/' + start.format('YYYY-MM-DD') + '/' + end.format('YYYY-MM-DD');}
 
-        {% endfor %}
-
-    </table>
-
-    <button id="submit" type="submit" name="go" class="btn btn-lg btn-info btn-block">Бүртгүүлэх</button>
-</form>
+);;
+});
+</script>
 
 {% endblock %}

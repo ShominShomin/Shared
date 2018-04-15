@@ -1,12 +1,25 @@
 {% extends 'base.html' %}
 
-{% block header_text %}Choose  Room{% endblock %}
-
 {% block content %}
 
-{% for room in rooms %}
-<a href="{{ room.room_number }}" class="btn btn-info" role="button">{{ room.room_name }}</a>
+<div class="custom_container">
+    {% for room in rooms %}
 
-{% endfor %}
+    <a href="{{ room.room_number }}" style="color: inherit; text-decoration: none">
+        <div class="card">
+            <div class="card_container">
+                <h4><b>{{room.room_name}}</b></h4>
+                <p>{{room.room_description}}</p>
+            </div>
+            <img src="{{ room.image.url }}" alt="Image">
+            <div class="icons">
+                Max people: {{room.max_people}}&nbsp&nbsp
+                Smoking: {% ifequal room.smoking False %} No {% else %} Yes {% endifequal %}
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+
+</div>
 
 {% endblock %}

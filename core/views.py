@@ -6,20 +6,17 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.csrf import csrf_protect
 from datetime import date, timedelta, datetime
 
-from .customcalendar import CustomCalendar
 from .forms import ReservationForm, RoomCreationForm, DateSelectionForm
-from .models import Room, ReservedRoom, Reservation
+from .models import Room, ReservedRoom, Reservation, Schedule, BigText
 
 
 def home_page(request):
     current_date = str(date.year) + "/" + str(date.month)
-    return render(request, 'home.html', {'current_date': mark_safe(current_date), })
+    schedules = Schedule.objects.all()
+    return render(request, 'home.html', {'current_date': mark_safe(current_date), 'schedules': schedules})
 
 
-def reservation_page(request, year, month):
-    year = int(year)
-    month = int(month)
-
+def reservation_page(request):
     if request.method == 'POST':
         date_selection_form = DateSelectionForm(request.POST)
         if date_selection_form.is_valid():
@@ -138,6 +135,7 @@ def room_clean_status(request, pk):
     room.save()
     return redirect('room_list')
 
+
 @login_required
 @staff_member_required
 def room_edit_page(request, pk=None):
@@ -145,10 +143,22 @@ def room_edit_page(request, pk=None):
         room = get_object_or_404(Room, pk=pk)
     else:
         room = Room()
-
     form = RoomCreationForm(request.POST or None, instance=room)
     if request.POST and form.is_valid():
         form.save()
         return redirect(room_list_page)
-
     return render(request, 'employee/edit.html', {'form': form})
+
+
+@login_required
+def model_form_upload(request):
+    if request.method == 'POST':
+        form = ImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = ImageForm()
+    return render(request, 'employee/upload.html', {
+        'form': form
+    })

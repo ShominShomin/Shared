@@ -1,11 +1,78 @@
 {% extends 'base.html' %}
 
-{% block header_text %}Home{% endblock %}
-
-
 {% block content %}
+<div class="parallax">
+    <div class="absolute_centered">
+        <p class="noselect">HOTEL NAME</p>
+    </div>
+</div>
+<div class="container">
+    <schedule>
+        <ul>
+            {% for schedule in schedules %}
+            <li>
+                <b>{{ schedule.event }}</b>
+                <br>{{ schedule.start_time }} - {{ schedule.end_time }}
+            </li>
+            {% endfor %}
+        </ul>
+    </schedule>
+    <h2>Description</h2>
 
-{% now "Y" as YEAR %}
-{% now "m" as MONTH %}
-<a id="id_reservation_button" href="{% url 'reservation' year=YEAR month=MONTH%}" class="btn btn-info" role="button">Reservation</a>
+    <p>Lorem ipsum dolor sit amet, cum erant movet appellantur no. Duo ex error tempor maiorum. Essent repudiare vim et,
+        cibo veri moderatius in vel. Ne his eirmod delicata, ei nam tamquam epicurei. Semper sensibus efficiantur ne
+        usu, harum tollit qui in.
+
+        Id omnes everti sea. Eu pro aeterno corpora reprimique. Minim graeci nominavi est ea. Labitur habemus ea vim, et
+        quando graeco eos. Omnium gloriatur at ius, est at quaeque perpetua, ad corpora atomorum conclusionemque duo.
+
+        Mel hinc tota admodum eu, an vim lorem nihil corrumpit, molestie percipitur deterruisset vim cu. Vel in probo
+        nulla. Quo primis probatus eu, pri id quod modus recusabo, his omnes veritus cu. Pri verear partiendo ea,
+        labores appareat disputationi per et. Audire fuisset ancillae quo an, assum deleniti est te. Ex tantas iuvaret
+        sit.
+
+        Laoreet dignissim cu nam, quis saepe verterem mei ea. Assentior interesset pri ut, in est nihil nobis, quo te
+        altera detracto sadipscing. Vix etiam nullam indoctum ex, nam at omnis maluisset, vel suas adolescens dissentiet
+        ad. Facilis ceteros dignissim ius at, duo ad dicant iracundia.
+
+        Ludus congue sed ei, in has adhuc facer tempor. Cum regione aperiam vituperata ea. Pri sint nobis tation ne. Vim
+        ut stet debitis nominati, an sea magna doctus. Eam cu graeco forensibus quaerendum. Choro option pertinax vis
+        eu. Nam ceteros pertinacia ea, cum cu cibo commodo elaboraret.</p>
+    <h2>Extra</h2>
+
+    <p>Lorem ipsum dolor sit amet, cum erant movet appellantur no. Duo ex error tempor maiorum. Essent repudiare vim et,
+        cibo veri moderatius in vel. Ne his eirmod delicata, ei nam tamquam epicurei. Semper sensibus efficiantur ne
+        usu, harum tollit qui in.
+
+        Id omnes everti sea. Eu pro aeterno corpora reprimique. Minim graeci nominavi est ea. Labitur habemus ea vim, et
+        quando graeco eos. Omnium gloriatur at ius, est at quaeque perpetua, ad corpora atomorum conclusionemque duo.
+
+        Mel hinc tota admodum eu, an vim lorem nihil corrumpit, molestie percipitur deterruisset vim cu. Vel in probo
+        nulla. Quo primis probatus eu, pri id quod modus recusabo, his omnes veritus cu. Pri verear partiendo ea,
+        labores appareat disputationi per et. Audire fuisset ancillae quo an, assum deleniti est te. Ex tantas iuvaret
+        sit.
+
+        Laoreet dignissim cu nam, quis saepe verterem mei ea. Assentior interesset pri ut, in est nihil nobis, quo te
+        altera detracto sadipscing. Vix etiam nullam indoctum ex, nam at omnis maluisset, vel suas adolescens dissentiet
+        ad. Facilis ceteros dignissim ius at, duo ad dicant iracundia.
+
+        Ludus congue sed ei, in has adhuc facer tempor. Cum regione aperiam vituperata ea. Pri sint nobis tation ne. Vim
+        ut stet debitis nominati, an sea magna doctus. Eam cu graeco forensibus quaerendum. Choro option pertinax vis
+        eu. Nam ceteros pertinacia ea, cum cu cibo commodo elaboraret.</p>
+
+</div>
+
+<div id="map" style="width:100%;height:500px;"></div>
+
+<script>
+    function myMap() {
+        var mapCanvas = document.getElementById("map");
+        var mapOptions = {
+            center: new google.maps.LatLng(47.921230, 106.918556), zoom: 15
+        };
+        var map = new google.maps.Map(mapCanvas, mapOptions);
+    }
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnR2VGiiMrxLBogiGbxyidXlpVYyruOZs&callback=myMap"></script>
 {% endblock %}

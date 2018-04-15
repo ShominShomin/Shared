@@ -24,19 +24,15 @@ class HomePageTest(TestCase):
 class ReservationPageTest(TestCase):
 
     def test_reservation_page_uses_template(self):
-        year = datetime.today().year
-        month = datetime.today().month
-        reservation_date = "/reservation/" + str(year) + "/" + str(month)
+        reservation_date = "/reservation"
         response = self.client.get(reservation_date)
         self.assertTemplateUsed(response, 'reservation.html')
 
     def test_redirects_to_reservation_room_page(self):
-        year = datetime.today().year
-        month = datetime.today().month
         start_date = datetime.today().strftime('%m/%d/%Y')
         end_date = datetime.today().strftime('%m/%d/%Y')
         response = self.client.post(
-            f'/reservation/{year}/{month}', {'start_date': start_date, 'end_date': end_date}
+            f'/reservation', {'start_date': start_date, 'end_date': end_date}
         )
         start_date = datetime.today().strftime('%Y-%m-%d')
         end_date = datetime.today().strftime('%Y-%m-%d')

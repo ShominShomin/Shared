@@ -1,20 +1,19 @@
 from django.db import models
 from django_countries.fields import CountryField
-from datetime import datetime
 from django.utils import timezone
 
 
 class Room(models.Model):
     room_id = models.AutoField(primary_key=True)
-
-    room_number = models.PositiveIntegerField(default=0)
     last_cleaned = models.DateTimeField(default=timezone.now)
     is_occupied = models.BooleanField(default=False)
+    room_number = models.PositiveIntegerField(default=0)
 
     room_name = models.CharField(max_length=40)
     room_description = models.TextField(max_length=800, default=' ')
     smoking = models.BooleanField(default=False)
     max_people = models.PositiveIntegerField(default=1)
+    image = models.FileField(upload_to='image/', default='image/room_default.png')
 
     def __str__(self):
         return self.room_name
@@ -27,7 +26,6 @@ class Reservation(models.Model):
     country_name = CountryField()
     city_name = models.CharField(max_length=40)
     phone_number = models.CharField(max_length=20)
-
     confirmation = models.BooleanField(default=False)
 
     def __str__(self):
@@ -37,7 +35,6 @@ class Reservation(models.Model):
 
 class ReservedRoom(models.Model):
     reserved_room_id = models.AutoField(primary_key=True)
-    #below are the fields
     date = models.DateField()
     room_number = models.PositiveIntegerField()
     reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE, null=True)
@@ -48,3 +45,21 @@ class ReservedRoom(models.Model):
     def __str__(self):
         string = str(self.room_number) + ", " + str(self.date)
         return string
+
+
+class Schedule(models.Model):
+    event = models.CharField(max_length=50)
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+
+    def __str__(self):
+        string = self.event + " " + str(self.start_time) + " " + str(self.end_time)
+        return string
+
+
+class BigText(models.Model):
+    title = models.CharField(max_length=40, default='No Title')
+    text = models.TextField(max_length=1000, default=' ')
+
+    def __str__(self):
+        return self.title

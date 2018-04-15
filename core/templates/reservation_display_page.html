@@ -1,12 +1,11 @@
 {% extends 'base.html' %}
 
-{% block header_text %}Your reservation has been placed{% endblock %}
 
 {% block content %}
-
-{% for reservation in reservation %}
-{{ reservation.confirmation }}
-{% endfor %}
-
+<div id="custom_container" style="margin-top: 30px">
+    {% for reservation in reservation %}
+    {{ reservation.confirmation }}
+    {% endfor %}
+</div>
 
 {% endblock %}
