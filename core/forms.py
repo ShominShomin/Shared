@@ -6,7 +6,7 @@ from datetime import datetime
 class ReservationForm(forms.ModelForm):
     class Meta:
         model = Reservation
-        fields = ('first_name', 'last_name', 'e_mail_address', 'country_name', 'city_name', 'phone_number')
+        fields = ('first_name', 'last_name', 'e_mail_address', 'country_name', 'address', 'phone_number')
 
 
 class RoomCreationForm(forms.ModelForm):

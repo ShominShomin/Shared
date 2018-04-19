@@ -1,9 +1,16 @@
 {% extends 'base.html' %}
+{% block menu %}
+<a class="active" href="{% url 'home'%}">Home</a>
+<a href="/">About</a>
+<a href="/">Work</a>
+<a href="/">Contact</a>
+{% endblock %}
 
 {% block content %}
-<div class="container" style="margin-bottom: 50px; margin-top: 10px">
-<form method="post" action="" role="registration">
+<div class="container" style="margin-bottom: 50px; margin-top: 100px">
+<form id="form_shadow" method="post" action="" role="registration">
     {% csrf_token %}
+    <h3>Booking Form</h3>
     <table class="table">
         {% for field in reservation_form %}
         <tr>
@@ -17,7 +24,7 @@
         {% endfor %}
     </table>
 
-    <button id="id_confirmation_button" type="submit" name="go" class="btn btn-lg btn-info btn-block">Бүртгүүлэх
+    <button id="id_confirmation_button" type="submit">MAKE RESERVATION
     </button>
 </form>
 </div>

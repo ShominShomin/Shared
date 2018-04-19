@@ -1,6 +1,7 @@
 from django.db import models
 from django_countries.fields import CountryField
 from django.utils import timezone
+from datetime import date
 
 
 class Room(models.Model):
@@ -24,9 +25,31 @@ class Reservation(models.Model):
     last_name = models.CharField(max_length=30)
     e_mail_address = models.CharField(max_length=50)
     country_name = CountryField()
-    city_name = models.CharField(max_length=40)
+    address = models.CharField(max_length=40)
     phone_number = models.CharField(max_length=20)
     confirmation = models.BooleanField(default=False)
+
+    @property
+    def reserved_room(self):
+        return ReservedRoom.objects.filter(reservation=self)
+
+    @property
+    def reserved_room_number(self):
+        return ReservedRoom.objects.filter(reservation=self).values('room_number').distinct()
+
+    def __str__(self):
+        string = self.first_name + " " + str(self.last_name)
+        return string
+
+
+class DeletedReservation(models.Model):
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+    e_mail_address = models.CharField(max_length=50)
+    country_name = CountryField()
+    address = models.CharField(max_length=40)
+    phone_number = models.CharField(max_length=20)
+    deleted_date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         string = self.first_name + " " + str(self.last_name)
@@ -38,6 +61,14 @@ class ReservedRoom(models.Model):
     date = models.DateField()
     room_number = models.PositiveIntegerField()
     reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE, null=True)
+
+    @property
+    def is_past_due(self):
+        return date.today() > self.date
+
+    @property
+    def my_reservation(self):
+        return Reservation.objects.get(id = self.reservation.id)
 
     class Meta:
         unique_together = ('date', 'room_number',)

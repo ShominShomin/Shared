@@ -4,19 +4,17 @@
 <a href="{% url 'employee_home' %}">Home</a>
 <a href="{% url 'schedule_list' %}">Schedule</a>
 <a href="{% url 'employee_add' %}">Add employee</a>
-<a class="active_menu" href="{% url 'confirm_reservations' %}">Confirm Reservations</a>
+<a href="{% url 'confirm_reservations' %}">Confirm Reservations</a>
 <a href="{% url 'room_list' %}">Rooms</a>
-<a href="{% url 'all_reservations' %}">History</a>
+<a class="active_menu" href="{% url 'all_reservations' %}">History</a>
 <a href="{% url 'deleted_reservations' %}">Deleted</a>
 {%endblock%}
 
-
 {% block content %}
-{% if reservations.exists %}
-<div class="centered_div"><h3>Unconfirmed Reservations</h3></div>
+<div class="centered_div"><h3>Reservations</h3></div>
 <table class="table_data">
-    <thead class="blue">
-    <tr class="city">
+    <thead class="grey">
+    <tr>
         <th>Last Name</th>
         <th>First Name</th>
         <th>E-mail</th>
@@ -24,14 +22,14 @@
         <th>Address</th>
         <th>Phone Number</th>
         <th>Room</th>
-        <th>Date</th>
-        <th  style="width: 260px">Actions</th>
+        <th>Start date</th>
+        <th>End date</th>
+
     </tr>
     </thead>
 
+    <tbody>
     {% for reservation in reservations %}
-
-    {% if not reservation.confirmation %}
     <tr>
         <td>{{reservation.last_name}}</td>
         <td>{{reservation.first_name}}</td>
@@ -45,19 +43,37 @@
             {%endfor%}
         </td>
         <td>
-            {{reservation.reserved_room.first.date}} to {{reservation.reserved_room.last.date}}
+            {{reservation.reserved_room.first.date}}
         </td>
         <td>
-            <a class="approve_button" href="{% url 'reservation_status' pk=reservation.pk %}">Confirm</a>&nbsp
-            <a class="reject_button" href="{% url 'reservation_delete' pk=reservation.pk %}">Reject</a>
+            {{reservation.reserved_room.last.date}}
         </td>
     </tr>
-    {% endif %}
-
     {% endfor %}
+    </tbody>
 
 </table>
-{% else %}
-<div class="centered_div"><h3> There are no unconfirmed reservations!</h3></div>
+
+{% if reservations.has_other_pages %}
+<ul class="pagination">
+    {% if reservations.has_previous %}
+    <li><a href="?page={{ reservations.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+    <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in reservations.paginator.page_range %}
+    {% if reservations.number == i %}
+    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+    {% else %}
+    <li><a href="?page={{ i }}">{{ i }}</a></li>
+    {% endif %}
+    {% endfor %}
+    {% if reservations.has_next %}
+    <li><a href="?page={{ reservations.next_page_number }}">&raquo;</a></li>
+    {% else %}
+    <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+</ul>
 {% endif %}
+
 {% endblock %}

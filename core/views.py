@@ -5,27 +5,16 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.csrf import csrf_protect
 from datetime import date, timedelta, datetime
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from .forms import ReservationForm, RoomCreationForm, DateSelectionForm
-from .models import Room, ReservedRoom, Reservation, Schedule, BigText
+from .forms import ReservationForm, RoomCreationForm, DateSelectionForm, ScheduleForm
+from .models import Room, ReservedRoom, Reservation, Schedule, BigText, DeletedReservation
 
 
 def home_page(request):
     current_date = str(date.year) + "/" + str(date.month)
     schedules = Schedule.objects.all()
     return render(request, 'home.html', {'current_date': mark_safe(current_date), 'schedules': schedules})
-
-
-def reservation_page(request):
-    if request.method == 'POST':
-        date_selection_form = DateSelectionForm(request.POST)
-        if date_selection_form.is_valid():
-            return redirect(reservation_room_page, start_date=date_selection_form.cleaned_data['start_date'],
-                            end_date=date_selection_form.cleaned_data['end_date'])
-    else:
-        date_selection_form = DateSelectionForm()
-
-    return render(request, 'reservation.html', {'date_selection_form': date_selection_form})
 
 
 def reservation_room_page(request, start_date, end_date):
@@ -80,12 +69,16 @@ def reservation_place_order_page(request, start_date, end_date, room):
 
 def reservation_display_page(request, pk):
     reservation = Reservation.objects.filter(pk=pk)
-    return render(request, 'reservation_display_page.html', {'reservation': reservation})
+    reserved_rooms = ReservedRoom.objects.filter(reservation=reservation)
+    return render(request, 'reservation_display_page.html',
+                  {'reservation': reservation, 'reserved_rooms': reserved_rooms})
 
 
 @login_required
 def employee_home_page(request):
-    return render(request, 'employee/home.html')
+    from django.utils import timezone
+    reserved_rooms = ReservedRoom.objects.filter(date=timezone.now().date())
+    return render(request, 'employee/home.html', {'reserved_rooms': reserved_rooms})
 
 
 @login_required
@@ -104,7 +97,9 @@ def employee_add_page(request):
 @login_required
 def reservation_confirmation_page(request):
     reservations = Reservation.objects.filter(confirmation=False)
-    return render(request, 'employee/reservations.html', {'reservations': reservations})
+    reserved_rooms = ReservedRoom.objects.filter(reservation=reservations.values('pk'))
+    return render(request, 'employee/reservations.html',
+                  {'reservations': reservations, 'reserved_rooms': reserved_rooms})
 
 
 @csrf_protect
@@ -113,6 +108,19 @@ def reservation_confirmation_status(request, pk):
     reservation = Reservation.objects.get(pk=pk)
     reservation.confirmation = not reservation.confirmation
     reservation.save()
+    return redirect('confirm_reservations')
+
+
+@csrf_protect
+@login_required
+def reservation_delete(request, pk):
+    reservation = Reservation.objects.get(pk=pk)
+    deleted_reservation = DeletedReservation(first_name=reservation.first_name, last_name=reservation.last_name,
+                                             e_mail_address=reservation.e_mail_address,
+                                             country_name=reservation.country_name, address=reservation.address,
+                                             phone_number=reservation.phone_number)
+    deleted_reservation.save()
+    reservation.delete()
     return redirect('confirm_reservations')
 
 
@@ -137,6 +145,13 @@ def room_clean_status(request, pk):
 
 
 @login_required
+def room_remove(request, pk):
+    room = Room.objects.get(pk=pk)
+    room.delete()
+    return redirect('room_list')
+
+
+@login_required
 @staff_member_required
 def room_edit_page(request, pk=None):
     if pk:
@@ -151,14 +166,54 @@ def room_edit_page(request, pk=None):
 
 
 @login_required
-def model_form_upload(request):
-    if request.method == 'POST':
-        form = ImageForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('home')
+def all_reservations_page(request):
+    reservation_list = Reservation.objects.filter(confirmation=True)
+    page = request.GET.get('page', 1)
+    paginator = Paginator(reservation_list, 25)
+    try:
+        reservations = paginator.page(page)
+    except PageNotAnInteger:
+        reservations = paginator.page(1)
+    except EmptyPage:
+        reservations = paginator.page(paginator.num_pages)
+    return render(request, 'employee/all.html', {'reservations': reservations})
+
+
+@login_required
+def deleted_reservations_page(request):
+    reservation_list = DeletedReservation.objects.all()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(reservation_list, 25)
+    try:
+        reservations = paginator.page(page)
+    except PageNotAnInteger:
+        reservations = paginator.page(1)
+    except EmptyPage:
+        reservations = paginator.page(paginator.num_pages)
+    return render(request, 'employee/deleted.html', {'reservations': reservations})
+
+
+@login_required
+def schedule_page(request):
+    schedule_list = Schedule.objects.all()
+    return render(request, 'employee/schedules.html', {'schedule_list': schedule_list})
+
+
+@login_required
+def schedule_edit_page(request, pk=None):
+    if pk:
+        schedule = get_object_or_404(Schedule, pk=pk)
     else:
-        form = ImageForm()
-    return render(request, 'employee/upload.html', {
-        'form': form
-    })
+        schedule = Schedule()
+    form = ScheduleForm(request.POST or None, instance=schedule)
+    if request.POST and form.is_valid():
+        form.save()
+        return redirect(schedule_page)
+    return render(request, 'employee/schedule_edit.html', {'form': form})
+
+
+@login_required
+def schedule_remove(request, pk):
+    schedule = Schedule.objects.get(pk=pk)
+    schedule.delete()
+    return redirect('schedule_list')

@@ -7,19 +7,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Hotel System</title>
     <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/static/table.css" rel="stylesheet">
+    <link href="/static/employee_base.css" rel="stylesheet">
+    <link href="/static/base.css" rel="stylesheet">
 
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link href="/static/daterangepicker/daterangepicker.css" rel="stylesheet" type="text/css"/>
 
+    <script src="/static/jquery3.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="/static/daterangepicker/daterangepicker.js"></script>
+
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 
 
 <body>
 
-<h1>{% block header_text %}{% endblock %}</h1>
+<div class="sidenav">
+    <p class="user_name" href="">{{user.username}} <i class="fa fa-user"></i></p>
+    {%block menu%}{%endblock%}
+    <div class="copy_menu">
+        <div name="daterange"><p class="noselect">New Reservation</p></div>
+    </div>
 
-{% block content %}{% endblock %}
+    <a class="bottom_logout" href="{%url 'logout'%}">Logout<i class="fa fa-sign-out" aria-hidden="true"></i></a>
+</div>
 
+<div class="main">
+    {% block content %}{% endblock %}
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $('div[name="daterange"]').daterangepicker(
+            {
+                autoUpdateInput: false,
+                "minDate": "{% now "m d Y" %}",
+                "opens": "right"
+            }
+        );
+        $('div[name="daterange"]').on('apply.daterangepicker', function (ev, picker) {
+            location.href = '/reservation/' + picker.startDate.format('YYYY-MM-DD') + '/' + picker.endDate.format('YYYY-MM-DD');
+        });
+        $('div[name="daterange"]').on('cancel.daterangepicker', function (ev, picker) {
+            $(this).val('');
+        });
+    });
+</script>
 </body>
-
 
 </html>

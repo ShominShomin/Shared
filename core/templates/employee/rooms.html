@@ -1,21 +1,26 @@
 {% extends 'employee/base.html' %}
 
-
-{% block header_text %}Rooms{% endblock %}
+{%block menu%}
+<a href="{% url 'employee_home' %}">Home</a>
+<a href="{% url 'schedule_list' %}">Schedule</a>
+<a href="{% url 'employee_add' %}">Add employee</a>
+<a href="{% url 'confirm_reservations' %}">Confirm Reservations</a>
+<a class="active_menu" href="{% url 'room_list' %}">Rooms</a>
+<a href="{% url 'all_reservations' %}">History</a>
+<a href="{% url 'deleted_reservations' %}">Deleted</a>
+{%endblock%}
 
 
 {% block content %}
-<a href="{% url 'room_new' %}">NEW ROOM</a>
 
-<table class="demo-table">
-    <thead>
+<table class="table_data">
+    <thead class="orange">
     <tr>
-        <th>Өрөөний тоот</th>
-        <th>Өрөөний нэр</th>
-        <th>Одоогоор хүнтэй байгаа эсэх</th>
-        <th>Сүүлд цэвэрлэсэн огноо</th>
-        <th></th>
-        <th></th>
+        <th style="width: 150px">Room number</th>
+        <th>Room name</th>
+        <th>Occupied</th>
+        <th>Last cleaned</th>
+        <th style="width: 330px">Actions</th>
     </tr>
     </thead>
 
@@ -25,12 +30,15 @@
         <td>{{room}}</td>
         <td>{{room.is_occupied}}</td>
         <td>{{room.last_cleaned}}</td>
-        <td><a href="{% url 'clean_status' pk=room.pk %}">Clean</a></td>
-        <td><a href="{% url 'room_edit' pk=room.pk %}">ӨӨРЧЛӨХ</a></td>
+        <td><a class="approve_button" style="padding:5px 30px;" href="{% url 'clean_status' pk=room.pk %}">Clean</a>
+            <a class="edit_button" href="{% url 'room_edit' pk=room.pk %}">Edit</a>
+            <a class="reject_button" href="{% url 'remove_room' pk=room.pk %}">Delete</a></td>
 
     </tr>
     {% endfor %}
 
 </table>
+<div class="centered_div" style="margin-top: 60px"><a class="flat_button" href="{% url 'room_new' %}">NEW ROOM</a>
+</div>
 {% endblock %}
 

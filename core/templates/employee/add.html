@@ -1,13 +1,21 @@
-{% extends 'base.html' %}
+{% extends 'employee/base.html' %}
 
-{% block header_text %}Add user{% endblock %}
+{%block menu%}
+<a href="{% url 'employee_home' %}">Home</a>
+<a href="{% url 'schedule_list' %}">Schedule</a>
+<a class="active_menu" href="{% url 'employee_add' %}">Add employee</a>
+<a href="{% url 'confirm_reservations' %}">Confirm Reservations</a>
+<a href="{% url 'room_list' %}">Rooms</a>
+<a href="{% url 'all_reservations' %}">History</a>
+<a href="{% url 'deleted_reservations' %}">Deleted</a>
+{%endblock%}
 
 
 {% block content %}
 
-<form method="post" action="" role="registration">
+<form id="form_shadow" method="post" action="" role="registration">
     {% csrf_token %}
-
+    <h3>New user form</h3>
     <table class="table">
         {% for field in user_creation_form %}
         <tr>
@@ -22,9 +30,7 @@
 
     </table>
 
-    <button id="submit" type="submit" name="go" class="btn btn-lg btn-info btn-block">Бүртгүүлэх</button>
+    <button id="id_confirmation_button" type="submit">Register</button>
 </form>
-
-<a id="cancel_button" href="{% url 'employee_home' %}" class="btn btn-lg btn-info btn-block">Болих</a>
 
 {% endblock %}

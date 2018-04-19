@@ -1,4 +1,10 @@
 {% extends 'base.html' %}
+{% block menu %}
+<a class="active" href="{% url 'home'%}">Home</a>
+<a href="/">About</a>
+<a href="/">Work</a>
+<a href="/">Contact</a>
+{% endblock %}
 
 {% block content %}
 <div class="parallax">
@@ -12,7 +18,7 @@
             {% for schedule in schedules %}
             <li>
                 <b>{{ schedule.event }}</b>
-                <br>{{ schedule.start_time }} - {{ schedule.end_time }}
+                <br>{{ schedule.start_time|time:"H:i" }} - {{ schedule.end_time|time:"H:i" }}
             </li>
             {% endfor %}
         </ul>

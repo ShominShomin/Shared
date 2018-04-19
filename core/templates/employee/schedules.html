@@ -1,0 +1,41 @@
+{% extends 'employee/base.html' %}
+
+{%block menu%}
+<a href="{% url 'employee_home' %}">Home</a>
+<a class="active_menu" href="{% url 'schedule_list' %}">Schedule</a>
+<a href="{% url 'employee_add' %}">Add employee</a>
+<a href="{% url 'confirm_reservations' %}">Confirm Reservations</a>
+<a href="{% url 'room_list' %}">Rooms</a>
+<a href="{% url 'all_reservations' %}">History</a>
+<a href="{% url 'deleted_reservations' %}">Deleted</a>
+{%endblock%}
+
+
+{% block content %}
+
+<table class="table_data">
+    <thead class="orange">
+    <tr>
+        <th style="width: 150px">Name</th>
+        <th>Start</th>
+        <th>End</th>
+        <th style="width: 330px">Actions</th>
+    </tr>
+    </thead>
+
+    {% for schedule in schedule_list %}
+    <tr>
+        <td>{{schedule.event}}</td>
+        <td>{{schedule.start_time|time:"H:i" }}</td>
+        <td>{{schedule.end_time|time:"H:i" }}</td>
+        <td>
+            <a class="edit_button" href="{% url 'schedule_edit' pk=schedule.pk %}">Edit</a>
+            <a class="reject_button" href="{% url 'schedule_remove' pk=schedule.pk %}">Delete</a></td>
+        </tr>
+    {% endfor %}
+
+</table>
+<div class="centered_div" style="margin-top: 60px"><a class="flat_button" href="{% url 'schedule_new' %}">NEW SCHEDULE</a>
+</div>
+{% endblock %}
+

@@ -1,11 +1,45 @@
 {% extends 'base.html' %}
+{% block menu %}
+<a class="active" href="{% url 'home'%}">Home</a>
+<a href="/">About</a>
+<a href="/">Work</a>
+<a href="/">Contact</a>
+{% endblock %}
 
 
 {% block content %}
-<div id="custom_container" style="margin-top: 30px">
-    {% for reservation in reservation %}
-    {{ reservation.confirmation }}
-    {% endfor %}
-</div>
+{% for reservation in reservation %}
+<div class="custom_date_container">
+    <h1>Reservation ID: {{ reservation.id }}</h1>
+    {% for reserved_room in reserved_rooms %}
+    <div class="order_card">
+        {% if reserved_room.is_past_due %}
+        <div class="order_card_container_reverse">
+            {% else %}
+            <div class="order_card_container">
+                {% endif %}
 
-{% endblock %}
+                <h4><b>{{reserved_room.date|date:"M d, Y" }}</b></h4>
+                <p>Room No: {{reserved_room.room_number}}</p>
+            </div>
+        </div>
+        {% endfor %}
+        <br>
+        {% ifequal reservation.confirmation False %}
+        <div class="not_confirmed_text">
+            Reservation is not confirmed. Wait until an employee contacts you.
+        </div>
+        {% else %}
+        <div class="confirmed_text">
+            Reservation is confirmed.
+        </div>
+        {% endifequal %}
+        <br>
+        {% if user.is_authenticated %}
+        <a href="{% url 'employee_home' %}" class="flat_button">RETURN TO EMPLOYEE HOME</a>
+        {%endif%}
+    </div>
+
+    {% endfor %}
+
+    {% endblock %}
