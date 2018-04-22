@@ -1,0 +1,240 @@
+body {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", "Segoe Ui";
+    min-width: 1000px;
+    width: auto !important;
+    width: 1000px;
+}
+
+.table_data {
+    border-collapse: collapse;
+    font-size: 13px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    table-layout:fixed;
+}
+
+.table_data th,
+.table_data td {
+    border: 1px solid #e1edff;
+    padding: 7px 17px;
+}
+
+.table_data .title {
+    caption-side: bottom;
+    margin-top: 12px;
+}
+
+.table_data thead th {
+    background-color: #c0573d;
+    color: #FFFFFF;
+    border-color: #f8fff1 !important;
+    text-transform: uppercase;
+
+}
+
+.table_data thead.blue th {
+    background-color: dodgerblue;
+    color: #FFFFFF;
+    border-color: #f8fff1 !important;
+    text-transform: uppercase;
+}
+
+.table_data thead.green th {
+    background-color: forestgreen;
+    color: #FFFFFF;
+    border-color: #f8fff1 !important;
+    text-transform: uppercase;
+}
+
+.table_data thead.orange th {
+    background-color: darkorange;
+    color: #FFFFFF;
+    border-color: #f8fff1 !important;
+    text-transform: uppercase;
+}
+
+.table_data thead.grey th {
+    background-color: grey;
+    color: #FFFFFF;
+    border-color: #f8fff1 !important;
+    text-transform: uppercase;
+}
+
+.table_data tbody td {
+    color: #353535;
+}
+
+.table_data tbody tr:nth-child(odd) td {
+    background-color: #e9f0f4;
+}
+
+.table_data tbody tr:hover td {
+    background-color: #dfdbe3;
+    transition: all .2s;
+}
+
+.table_data tfoot th {
+    background-color: #e5f5ff;
+}
+
+.table_data tfoot th:first-child {
+    text-align: left;
+}
+
+.table_data tbody td:empty {
+    background-color: #ffcccc;
+}
+
+.sidenav {
+    height: 100%;
+    width: 220px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background: linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,
+    linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px,
+    linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px,
+    linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px,
+    linear-gradient(90deg, #1b1b1b 10px, transparent 10px),
+    linear-gradient(#1d1d1d 25%, #1a1a1a 25%, #1a1a1a 50%, transparent 50%, transparent 75%, #242424 75%, #242424);
+    background-color: #131313;
+    background-size: 20px 20px;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+.sidenav a {
+    padding: 16px 8px 16px 16px;
+    text-decoration: none;
+    font-size: 15px;
+    color: white;
+    display: block;
+    transition: all .2s ease-in-out;
+}
+
+.bottom_logout {
+    position: absolute;
+    bottom: 9px;
+}
+
+.active_menu {
+    background: #e66053;
+}
+
+.sidenav a:hover {
+    color: #a0a0a0;
+}
+
+.main {
+    margin-left: 220px;
+    padding: 0px 10px;
+}
+
+@-webkit-keyframes neon2 {
+    from {
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #228DFF, 0 0 70px #228DFF, 0 0 80px #228DFF, 0 0 100px #228DFF, 0 0 150px #228DFF;
+    }
+    to {
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #228DFF, 0 0 35px #228DFF, 0 0 40px #228DFF, 0 0 50px #228DFF, 0 0 75px #228DFF;
+    }
+}
+
+.user_name {
+    text-decoration: none;
+    font-size: 25px;
+    color: white;
+    display: block;
+    text-align: center;
+}
+
+#id_smoking {
+    height: 25px;
+    width: 25px;
+}
+
+.copy_menu {
+    padding: 16px 8px 16px 16px;
+    text-decoration: none;
+    font-size: 15px;
+    color: white;
+    display: block;
+    transition: all .2s ease-in-out;
+    cursor: pointer;
+}
+
+.copy_menu:hover {
+    color: #a0a0a0;
+}
+
+ul.dates > li {
+    display: inline-block;
+    padding: 0;
+    *display: inline;
+}
+
+li:nth-child(even) {
+    color: #c6ccc6;
+}
+
+.centered_div {
+    text-align: center;
+    margin-bottom: 0px;
+}
+
+a.approve_button {
+    color: white;
+    text-align: center;
+    font-size: 18px;
+    background: #1fa011;
+    padding: 5px 20px;
+    text-decoration: none;
+    transition-duration: 0.4s;
+    margin-right: 10px;
+}
+
+a.approve_button:hover {
+    background: #178166;
+}
+
+a.approve_button:active {
+    top: 1px;
+}
+
+a.edit_button {
+    color: white;
+    text-align: center;
+    font-size: 18px;
+    background: #ffae3b;
+    padding: 5px 10px;
+    text-decoration: none;
+    transition-duration: 0.4s;
+    margin-right: 10px;
+}
+
+a.edit_button:hover {
+    background: #db9831;
+}
+
+a.edit_button:active {
+    top: 1px;
+}
+
+a.reject_button {
+    color: white;
+    text-align: center;
+    font-size: 18px;
+    background: #cf1313;
+    padding: 5px 18px;
+    text-decoration: none;
+    transition-duration: 0.4s;
+}
+
+a.reject_button:hover {
+    background: #a81010;
+}
+
+a.reject_button:active {
+    top: 1px;
+}
