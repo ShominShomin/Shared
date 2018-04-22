@@ -157,11 +157,12 @@ def room_edit_page(request, pk=None):
         room = get_object_or_404(Room, pk=pk)
     else:
         room = Room()
-    form = RoomCreationForm(request.POST or None, instance=room)
+    form = RoomCreationForm(request.POST or None, request.FILES or None, instance=room)
     if request.POST and form.is_valid():
         form.save()
         return redirect(room_list_page)
     return render(request, 'employee/edit.html', {'form': form})
+
 
 @login_required
 def all_reservations_page(request):
