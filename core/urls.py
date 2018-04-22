@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^employee/add$', views.employee_add_page, name='employee_add'),
     url(r'^employee/all$', views.all_reservations_page, name='all_reservations'),
     url(r'^employee/deleted$', views.deleted_reservations_page, name='deleted_reservations'),
+
     url(r'^employee/reservations$', views.reservation_confirmation_page, name='confirm_reservations'),
     url(r'^status/(?P<pk>\d+)$', views.reservation_confirmation_status, name='reservation_status'),
     url(r'^remove/(?P<pk>\d+)$', views.reservation_delete, name='reservation_delete'),

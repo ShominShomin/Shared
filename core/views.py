@@ -6,9 +6,10 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.csrf import csrf_protect
 from datetime import date, timedelta, datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.utils import timezone
 
-from .forms import ReservationForm, RoomCreationForm, DateSelectionForm, ScheduleForm
-from .models import Room, ReservedRoom, Reservation, Schedule, BigText, DeletedReservation
+from .forms import ReservationForm, RoomCreationForm, ScheduleForm
+from .models import Room, ReservedRoom, Reservation, Schedule, DeletedReservation
 
 
 def home_page(request):
@@ -21,13 +22,12 @@ def reservation_room_page(request, start_date, end_date):
     rooms = Room.objects.all()
     start_date = datetime.strptime(start_date, '%Y-%m-%d')
     end_date = datetime.strptime(end_date, '%Y-%m-%d')
-
+    if start_date < timezone.datetime.today() - timedelta(2):
+        return redirect(home_page)
     for single_date in daterange(start_date, end_date):
         reserved_rooms = ReservedRoom.objects.filter(date=single_date)
-
         for reserved_room in reserved_rooms:
             rooms = rooms.exclude(room_number=reserved_room.room_number)
-
     return render(request, 'reservation_room.html', {'rooms': rooms})
 
 
@@ -39,13 +39,13 @@ def daterange(start_date, end_date):
 def reservation_place_order_page(request, start_date, end_date, room):
     start_date = datetime.strptime(start_date, '%Y-%m-%d')
     end_date = datetime.strptime(end_date, '%Y-%m-%d')
-
+    if start_date < timezone.datetime.today() - timedelta(2):
+        return redirect(home_page)
     for single_date in daterange(start_date, end_date):
         if ReservedRoom.objects.filter(room_number=room, date=single_date).exists():
             return redirect(home_page)
     if not Room.objects.filter(room_number=room).exists():
         return redirect(home_page)
-
     if request.method == 'POST':
         reservation_form = ReservationForm(request.POST)
         if reservation_form.is_valid():
@@ -61,7 +61,6 @@ def reservation_place_order_page(request, start_date, end_date, room):
                 reservation.confirmation = True
             reservation.save()
             return redirect('reservation_display', pk=reservation.pk)
-            # return render(request, 'reservation_display_page.html', {'pk': reservation.pk})
     else:
         reservation_form = ReservationForm(initial={'country_name': 'MN'})
     return render(request, 'reservation_place_order.html', {'reservation_form': reservation_form})
@@ -164,10 +163,9 @@ def room_edit_page(request, pk=None):
         return redirect(room_list_page)
     return render(request, 'employee/edit.html', {'form': form})
 
-
 @login_required
 def all_reservations_page(request):
-    reservation_list = Reservation.objects.filter(confirmation=True)
+    reservation_list = Reservation.objects.filter(confirmation=True).order_by('id')
     page = request.GET.get('page', 1)
     paginator = Paginator(reservation_list, 25)
     try:
@@ -181,7 +179,7 @@ def all_reservations_page(request):
 
 @login_required
 def deleted_reservations_page(request):
-    reservation_list = DeletedReservation.objects.all()
+    reservation_list = DeletedReservation.objects.all().order_by('id')
     page = request.GET.get('page', 1)
     paginator = Paginator(reservation_list, 25)
     try:

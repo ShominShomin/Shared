@@ -1,7 +1,6 @@
 from django.db import models
 from django_countries.fields import CountryField
 from django.utils import timezone
-from datetime import date
 
 
 class Room(models.Model):
@@ -41,6 +40,27 @@ class Reservation(models.Model):
         string = self.first_name + " " + str(self.last_name)
         return string
 
+class ReservedRoom(models.Model):
+    reserved_room_id = models.AutoField(primary_key=True)
+    date = models.DateField()
+    room_number = models.PositiveIntegerField()
+    reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE, null=True)
+
+    @property
+    def is_past_due(self):
+        return timezone.now().date() > self.date
+
+    @property
+    def my_reservation(self):
+        return Reservation.objects.get(id = self.reservation.id)
+
+    class Meta:
+        unique_together = ('date', 'room_number',)
+
+    def __str__(self):
+        string = str(self.room_number) + ", " + str(self.date)
+        return string
+
 
 class DeletedReservation(models.Model):
     first_name = models.CharField(max_length=30)
@@ -53,28 +73,6 @@ class DeletedReservation(models.Model):
 
     def __str__(self):
         string = self.first_name + " " + str(self.last_name)
-        return string
-
-
-class ReservedRoom(models.Model):
-    reserved_room_id = models.AutoField(primary_key=True)
-    date = models.DateField()
-    room_number = models.PositiveIntegerField()
-    reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE, null=True)
-
-    @property
-    def is_past_due(self):
-        return date.today() > self.date
-
-    @property
-    def my_reservation(self):
-        return Reservation.objects.get(id = self.reservation.id)
-
-    class Meta:
-        unique_together = ('date', 'room_number',)
-
-    def __str__(self):
-        string = str(self.room_number) + ", " + str(self.date)
         return string
 
 
