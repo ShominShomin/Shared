@@ -10,7 +10,7 @@ class ReservationForm(forms.ModelForm):
 class RoomCreationForm(forms.ModelForm):
     class Meta:
         model = Room
-        fields = ('room_name', 'room_description', 'smoking', 'max_people', 'image',)
+        fields = ('room_number','room_name', 'room_description', 'smoking', 'max_people', 'image')
 
 class ScheduleForm(forms.ModelForm):
     class Meta:

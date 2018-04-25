@@ -386,10 +386,11 @@ class RoomEditTest(TestCase):
     def test_new_room(self):
         response = self.client.post(
             f'/room/new',
-            {'room_name': "testRoom",
+            {'room_number': "10",
+             'room_name': "testRoom",
              'room_description': "description",
              'smoking': True,
-             'max_people': 9}
+             'max_people': 3}
         )
         self.assertRedirects(response, f'/rooms')
         self.assertEqual(Room.objects.all().count(), 4)
@@ -398,10 +399,11 @@ class RoomEditTest(TestCase):
         room_before = Room.objects.get(pk=1)
         response = self.client.post(
             f'/room/edit/1',
-            {'room_name': "testRoom",
+            {'room_number': "10",
+             'room_name': "testRoom",
              'room_description': "description",
              'smoking': True,
-             'max_people': 9}
+             'max_people': 3}
         )
         self.assertRedirects(response, f'/rooms')
         self.assertEqual(Room.objects.all().count(), 3)
