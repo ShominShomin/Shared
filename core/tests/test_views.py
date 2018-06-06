@@ -503,13 +503,13 @@ class ScheduleEditTest(TestCase):
         response = self.client.get(f'/schedules/edit/1')
         self.assertRedirects(response, f'/accounts/login/?next=/schedules/edit/1')
 
-    def test_room_edit_uses_template(self):
+    def test_schedule_edit_uses_template(self):
         response = self.client.get(f'/schedules/new')
         self.assertTemplateUsed(response, 'employee/schedule_edit.html')
         response = self.client.get(f'/schedules/edit/1')
         self.assertTemplateUsed(response, 'employee/schedule_edit.html')
 
-    def test_new_room(self):
+    def test_new_schedule(self):
         import datetime
         response = self.client.post(
             f'/schedules/new',
@@ -520,7 +520,7 @@ class ScheduleEditTest(TestCase):
         self.assertRedirects(response, f'/schedules')
         self.assertEqual(Schedule.objects.all().count(), 4)
 
-    def test_room_edit(self):
+    def test_schedule_edit(self):
         import datetime
         schedule_before = Schedule.objects.get(pk=1)
         response = self.client.post(
@@ -536,7 +536,7 @@ class ScheduleEditTest(TestCase):
         self.assertNotEqual(schedule_before.start_time, schedule_after.start_time)
         self.assertNotEqual(schedule_before.end_time, schedule_after.end_time)
 
-    def test_remove_room(self):
+    def test_remove_schedule(self):
         import datetime
         schedule = Schedule.objects.create(event="test", start_time=datetime.time(17, 30),
                                            end_time=datetime.time(19, 30))

@@ -4,7 +4,7 @@ from functional_tests.wait import wait_for_page_load
 class EmployeeAdditionTest(FunctionalTest):
 
     def test_adding_new_employee(self):
-        # Ажилтан Болд ажилтдын нэвтрэх хуудсын хаягийг нээж нэвтрэх эрхээрээ нэвтэрч оров
+        # Менежер Болд ажилтдын нэвтрэх хуудсын хаягийг нээж нэвтрэх эрхээрээ нэвтэрч оров
         url = self.live_server_url + '/accounts/login/'
         self.browser.get(url)
         self.assertIn('Hotel System', self.browser.title)
